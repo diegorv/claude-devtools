@@ -221,6 +221,30 @@ describe('ChunkBuilder', () => {
           expect(chunks[0].commandOutput).toContain('Model set to sonnet');
         }
       });
+
+      it('should create UserChunk + SystemChunk from a bash-mode (!) command pair', () => {
+        const messages = [
+          createMessage({
+            type: 'user',
+            content: '<bash-input>pwd</bash-input>',
+            isMeta: false,
+          }),
+          createMessage({
+            type: 'user',
+            content: '<bash-stdout>/x</bash-stdout><bash-stderr></bash-stderr>',
+            isMeta: false,
+          }),
+        ];
+
+        const chunks = builder.buildChunks(messages);
+        expect(chunks).toHaveLength(2);
+        expect(isUserChunk(chunks[0])).toBe(true);
+        expect(isSystemChunk(chunks[1])).toBe(true);
+
+        if (isSystemChunk(chunks[1])) {
+          expect(chunks[1].commandOutput).toBe('/x');
+        }
+      });
     });
 
     describe('CompactChunk creation', () => {

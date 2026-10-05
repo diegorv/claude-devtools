@@ -106,6 +106,12 @@ function extractCommandOutput(message: ParsedMessage): string {
   if (matchStderr) {
     return matchStderr[1];
   }
+  // Bash mode (!) output always carries both tags; keep whichever streams are non-empty
+  const bashStdout = /<bash-stdout>([\s\S]*?)<\/bash-stdout>/.exec(content);
+  const bashStderr = /<bash-stderr>([\s\S]*?)<\/bash-stderr>/.exec(content);
+  if (bashStdout || bashStderr) {
+    return [bashStdout?.[1].trim(), bashStderr?.[1].trim()].filter(Boolean).join('\n');
+  }
   return content;
 }
 

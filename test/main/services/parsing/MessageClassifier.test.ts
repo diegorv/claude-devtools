@@ -126,6 +126,26 @@ describe('MessageClassifier', () => {
       expect(result.category).toBe('system');
     });
 
+    it('should classify bash-mode (!) output as system', () => {
+      const message = createMessage({
+        type: 'user',
+        content: '<bash-stdout>/x</bash-stdout><bash-stderr></bash-stderr>',
+        isMeta: false,
+      });
+      const [result] = classifyMessages([message]);
+      expect(result.category).toBe('system');
+    });
+
+    it('should classify bash-mode (!) input as user', () => {
+      const message = createMessage({
+        type: 'user',
+        content: '<bash-input>pwd</bash-input>',
+        isMeta: false,
+      });
+      const [result] = classifyMessages([message]);
+      expect(result.category).toBe('user');
+    });
+
     it('should classify array content with stdout as system', () => {
       const message = createMessage({
         type: 'user',

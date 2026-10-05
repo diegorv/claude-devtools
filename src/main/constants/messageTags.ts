@@ -14,6 +14,12 @@ export const LOCAL_COMMAND_STDOUT_TAG = '<local-command-stdout>';
 /** Local command stderr wrapper tag */
 export const LOCAL_COMMAND_STDERR_TAG = '<local-command-stderr>';
 
+/** Bash mode (!) stdout wrapper tag */
+export const BASH_STDOUT_TAG = '<bash-stdout>';
+
+/** Bash mode (!) stderr wrapper tag */
+export const BASH_STDERR_TAG = '<bash-stderr>';
+
 /** Local command caveat wrapper tag */
 const LOCAL_COMMAND_CAVEAT_TAG = '<local-command-caveat>';
 
@@ -38,6 +44,8 @@ export const EMPTY_STDERR = '<local-command-stderr></local-command-stderr>';
 export const SYSTEM_OUTPUT_TAGS = [
   LOCAL_COMMAND_STDERR_TAG,
   LOCAL_COMMAND_STDOUT_TAG,
+  BASH_STDOUT_TAG,
+  BASH_STDERR_TAG,
   LOCAL_COMMAND_CAVEAT_TAG,
   SYSTEM_REMINDER_TAG,
 ] as const;

@@ -7,6 +7,8 @@
  */
 
 import {
+  BASH_STDERR_TAG,
+  BASH_STDOUT_TAG,
   EMPTY_STDERR,
   EMPTY_STDOUT,
   HARD_NOISE_TAGS,
@@ -249,14 +251,19 @@ export function isParsedSystemChunkMessage(msg: ParsedMessage): boolean {
 
   if (typeof content === 'string') {
     return (
-      content.startsWith(LOCAL_COMMAND_STDOUT_TAG) || content.startsWith(LOCAL_COMMAND_STDERR_TAG)
+      content.startsWith(LOCAL_COMMAND_STDOUT_TAG) ||
+      content.startsWith(LOCAL_COMMAND_STDERR_TAG) ||
+      content.startsWith(BASH_STDOUT_TAG) ||
+      content.startsWith(BASH_STDERR_TAG)
     );
   }
 
   // Array content - check text blocks
   if (Array.isArray(content)) {
     return content.some(
-      (block) => block.type === 'text' && block.text.startsWith(LOCAL_COMMAND_STDOUT_TAG)
+      (block) =>
+        block.type === 'text' &&
+        (block.text.startsWith(LOCAL_COMMAND_STDOUT_TAG) || block.text.startsWith(BASH_STDOUT_TAG))
     );
   }
 

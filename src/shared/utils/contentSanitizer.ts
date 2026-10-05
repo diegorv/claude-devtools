@@ -42,7 +42,22 @@ function extractCommandOutput(content: string): string | null {
   if (matchStderr) {
     return matchStderr[1].trim();
   }
+  // Bash mode (!) output always carries both tags; show whichever streams are non-empty
+  const bashStdout = /<bash-stdout>([\s\S]*?)<\/bash-stdout>/i.exec(content);
+  const bashStderr = /<bash-stderr>([\s\S]*?)<\/bash-stderr>/i.exec(content);
+  if (bashStdout || bashStderr) {
+    return [bashStdout?.[1].trim(), bashStderr?.[1].trim()].filter(Boolean).join('\n');
+  }
   return null;
+}
+
+/**
+ * Extract the command typed in bash mode (! prefix).
+ * Returns it in readable format (e.g., "! pwd")
+ */
+function extractBashInputDisplay(content: string): string | null {
+  const match = /<bash-input>([\s\S]*?)<\/bash-input>/i.exec(content);
+  return match ? `! ${match[1].trim()}` : null;
 }
 
 /**
@@ -77,7 +92,10 @@ export function isCommandContent(content: string): boolean {
  */
 export function isCommandOutputContent(content: string): boolean {
   return (
-    content.startsWith('<local-command-stdout>') || content.startsWith('<local-command-stderr>')
+    content.startsWith('<local-command-stdout>') ||
+    content.startsWith('<local-command-stderr>') ||
+    content.startsWith('<bash-stdout>') ||
+    content.startsWith('<bash-stderr>')
   );
 }
 
@@ -103,6 +121,14 @@ export function sanitizeDisplayContent(content: string): string {
     const commandDisplay = extractCommandDisplay(content);
     if (commandDisplay) {
       return commandDisplay;
+    }
+  }
+
+  // If it's a bash mode (!) command, show it as the user typed it
+  if (content.startsWith('<bash-input>')) {
+    const bashDisplay = extractBashInputDisplay(content);
+    if (bashDisplay) {
+      return bashDisplay;
     }
   }
 

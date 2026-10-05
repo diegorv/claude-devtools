@@ -20,6 +20,8 @@ import * as path from 'path';
 
 const logger = createLogger('Service:SubagentDetailBuilder');
 
+import { SubagentLocator } from '../discovery/SubagentLocator';
+
 import { buildSemanticStepGroups } from './SemanticStepGrouper';
 
 import type { SubagentResolver } from '../discovery/SubagentResolver';
@@ -31,7 +33,7 @@ import type { SessionParser } from '../parsing/SessionParser';
  * Used for drill-down modal to show subagent's internal execution.
  *
  * @param projectId - Project ID
- * @param _sessionId - Parent session ID (currently unused, kept for API consistency)
+ * @param sessionId - Parent session ID
  * @param subagentId - Subagent ID to load
  * @param sessionParser - SessionParser instance for parsing subagent file
  * @param subagentResolver - SubagentResolver instance for nested subagents
@@ -42,7 +44,7 @@ import type { SessionParser } from '../parsing/SessionParser';
  */
 export async function buildSubagentDetail(
   projectId: string,
-  _sessionId: string, // Unused but kept for API consistency
+  sessionId: string,
   subagentId: string,
   sessionParser: SessionParser,
   subagentResolver: SubagentResolver,
@@ -51,17 +53,16 @@ export async function buildSubagentDetail(
   projectsDir: string
 ): Promise<SubagentDetail | null> {
   try {
-    // Construct path to subagent JSONL file
-    const subagentPath = path.join(
-      projectsDir,
+    // Locate subagent JSONL file (session subagents/, Workflow runs, or legacy project root)
+    const fileName = `agent-${subagentId}.jsonl`;
+    const subagentFiles = await new SubagentLocator(projectsDir, fsProvider).listSubagentFiles(
       projectId,
-      'subagents',
-      `agent-${subagentId}.jsonl`
+      sessionId
     );
+    const subagentPath = subagentFiles.find((file) => path.basename(file) === fileName);
 
-    // Check if file exists
-    if (!(await fsProvider.exists(subagentPath))) {
-      logger.warn(`Subagent file not found: ${subagentPath}`);
+    if (!subagentPath) {
+      logger.warn(`Subagent file not found: ${fileName} (session ${sessionId})`);
       return null;
     }
 

@@ -27,7 +27,7 @@ For maximum trust, run the Docker container with `--network none`:
 
 ```bash
 docker build -t claude-devtools .
-docker run --network none -p 3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools
+docker run --network none -p 127.0.0.1:3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools
 ```
 
 Or with Docker Compose, uncomment `network_mode: "none"` in `docker-compose.yml`.

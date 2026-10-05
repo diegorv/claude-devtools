@@ -6,10 +6,10 @@
  * static files over HTTP.
  *
  * Environment variables:
- * - HOST: Bind address (default '0.0.0.0')
+ * - HOST: Bind address (default '127.0.0.1')
  * - PORT: Listen port (default 3456)
  * - CLAUDE_ROOT: Path to .claude directory (default ~/.claude)
- * - CORS_ORIGIN: CORS origin policy (default '*')
+ * - CORS_ORIGIN: CORS origin policy (default: localhost origins only)
  */
 
 import { createLogger } from '@shared/utils/logger';
@@ -38,14 +38,9 @@ const logger = createLogger('Standalone');
 // Configuration
 // =============================================================================
 
-const HOST = process.env.HOST ?? '0.0.0.0';
+const HOST = process.env.HOST ?? '127.0.0.1';
 const PORT = parseInt(process.env.PORT ?? '3456', 10);
 const CLAUDE_ROOT = process.env.CLAUDE_ROOT;
-
-// Default CORS to allow all in standalone mode (Docker isolation replaces CORS)
-if (!process.env.CORS_ORIGIN) {
-  process.env.CORS_ORIGIN = '*';
-}
 
 // =============================================================================
 // Stub services (Electron-only features unavailable in standalone)

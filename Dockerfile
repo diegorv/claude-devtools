@@ -5,7 +5,7 @@
 # Mount your ~/.claude directory to make session data available.
 #
 # Build:  docker build -t claude-devtools .
-# Run:    docker run -p 3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools
+# Run:    docker run -p 127.0.0.1:3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools
 # =============================================================================
 
 FROM node:20-slim AS builder

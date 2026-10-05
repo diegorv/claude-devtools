@@ -16,12 +16,14 @@ services:
   claude-devtools:
     build: .
     ports:
-      - "${PORT:-3456}:3456"
+      - "127.0.0.1:${PORT:-3456}:3456"
     volumes:
       - ${CLAUDE_DIR:-~/.claude}:/data/.claude:ro
     environment:
       - NODE_ENV=production
       - CLAUDE_ROOT=/data/.claude
+      # 0.0.0.0 inside the container is required for port publishing;
+      # the host side is bound to 127.0.0.1 via `ports` above.
       - HOST=0.0.0.0
       - PORT=3456
     restart: unless-stopped

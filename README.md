@@ -184,16 +184,16 @@ Or manually:
 
 ```bash
 docker build -t claude-devtools .
-docker run -p 3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools
+docker run -p 127.0.0.1:3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools
 ```
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `CLAUDE_ROOT` | `~/.claude` | Path to the `.claude` data directory |
-| `HOST` | `0.0.0.0` | Bind address |
+| `HOST` | `127.0.0.1` | Bind address (Docker image sets `0.0.0.0` inside the container) |
 | `PORT` | `3456` | Listen port |
 
-The standalone server has **zero** outbound network calls. For maximum isolation: `docker run --network none -p 3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools`. See [SECURITY.md](SECURITY.md).
+The standalone server has **zero** outbound network calls. For maximum isolation: `docker run --network none -p 127.0.0.1:3456:3456 -v ~/.claude:/data/.claude:ro claude-devtools`. See [SECURITY.md](SECURITY.md).
 
 ---
 

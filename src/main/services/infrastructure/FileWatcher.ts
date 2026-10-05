@@ -551,7 +551,15 @@ export class FileWatcher extends EventEmitter {
       sessionId = path.basename(parts[1], '.jsonl');
     }
     // Subagent file: projectId/sessionId/subagents/agent-hash.jsonl
-    else if (parts.length === 4 && parts[2] === 'subagents' && parts[3].endsWith('.jsonl')) {
+    // Workflow subagent file: projectId/sessionId/subagents/workflows/runId/agent-hash.jsonl
+    else if (
+      parts[2] === 'subagents' &&
+      ((parts.length === 4 && parts[3].endsWith('.jsonl')) ||
+        (parts.length === 6 &&
+          parts[3] === 'workflows' &&
+          parts[5].startsWith('agent-') &&
+          parts[5].endsWith('.jsonl')))
+    ) {
       sessionId = parts[1];
       isSubagent = true;
     }
@@ -585,7 +593,7 @@ export class FileWatcher extends EventEmitter {
           // Only process subagent files if config allows
           const config = ConfigManager.getInstance().getConfig();
           if (config.notifications.includeSubagentErrors) {
-            const subagentFilename = path.basename(parts[3], '.jsonl');
+            const subagentFilename = path.basename(parts[parts.length - 1], '.jsonl');
             const subagentId = subagentFilename.replace(/^agent-/, '');
             this.activeSessionFiles.set(fullPath, { projectId, sessionId, subagentId });
             this.detectErrorsInSessionFile(projectId, sessionId, fullPath, subagentId).catch(

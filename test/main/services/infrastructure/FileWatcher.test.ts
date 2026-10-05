@@ -205,6 +205,48 @@ describe('FileWatcher', () => {
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
+  describe('processProjectsChange path parsing', () => {
+    async function processChange(relativePath: string) {
+      const dataCache = new DataCache(50, 10, false);
+      const fsProvider = {
+        type: 'local',
+        exists: vi.fn().mockResolvedValue(true),
+      } as unknown as ConstructorParameters<typeof FileWatcher>[3];
+      const watcher = new FileWatcher(dataCache, '/tmp/projects', '/tmp/todos', fsProvider);
+      const events: unknown[] = [];
+      watcher.on('file-change', (event) => events.push(event));
+
+      await (
+        watcher as unknown as {
+          processProjectsChange: (eventType: string, filename: string) => Promise<void>;
+        }
+      ).processProjectsChange('change', relativePath);
+
+      return events;
+    }
+
+    it('emits a subagent event for direct subagent files', async () => {
+      const events = await processChange('proj/sess-1/subagents/agent-abc.jsonl');
+      expect(events).toEqual([
+        expect.objectContaining({ projectId: 'proj', sessionId: 'sess-1', isSubagent: true }),
+      ]);
+    });
+
+    it('emits a subagent event for Workflow subagent files', async () => {
+      const events = await processChange(
+        'proj/sess-1/subagents/workflows/wf_abc-123/agent-abc.jsonl'
+      );
+      expect(events).toEqual([
+        expect.objectContaining({ projectId: 'proj', sessionId: 'sess-1', isSubagent: true }),
+      ]);
+    });
+
+    it('ignores Workflow journal files', async () => {
+      const events = await processChange('proj/sess-1/subagents/workflows/wf_abc-123/journal.jsonl');
+      expect(events).toEqual([]);
+    });
+  });
+
   // ===========================================================================
   // Catch-Up Scan Tests
   // ===========================================================================

@@ -6,6 +6,7 @@
  * - List subagent files for a session
  * - Handle both NEW and OLD subagent directory structures:
  *   - NEW: {projectId}/{sessionId}/subagents/agent-{agentId}.jsonl
+ *     (plus Workflow runs: {sessionId}/subagents/workflows/{runId}/agent-{agentId}.jsonl)
  *   - OLD: {projectId}/agent-{agentId}.jsonl (legacy, still supported)
  * - Determine subagent ownership for OLD structure
  */
@@ -44,14 +45,10 @@ export class SubagentLocator {
     const newSubagentsPath = this.getSubagentsPath(projectId, sessionId);
     if (await this.fsProvider.exists(newSubagentsPath)) {
       try {
-        const entries = await this.fsProvider.readdir(newSubagentsPath);
-        const subagentFiles = entries.filter(
-          (entry) => entry.name.startsWith('agent-') && entry.name.endsWith('.jsonl')
-        );
+        const subagentFiles = await this.listNewStructureFiles(newSubagentsPath);
 
         // Check if at least one subagent file has content (not empty)
-        for (const entry of subagentFiles) {
-          const filePath = path.join(newSubagentsPath, entry.name);
+        for (const filePath of subagentFiles) {
           try {
             const stats = await this.fsProvider.stat(filePath);
             // File must have size > 0 and contain at least one line
@@ -90,14 +87,7 @@ export class SubagentLocator {
       // Scan NEW structure: {projectId}/{sessionId}/subagents/agent-*.jsonl
       const newSubagentsPath = this.getSubagentsPath(projectId, sessionId);
       if (await this.fsProvider.exists(newSubagentsPath)) {
-        const entries = await this.fsProvider.readdir(newSubagentsPath);
-        const newFiles = entries
-          .filter(
-            (entry) =>
-              entry.isFile() && entry.name.startsWith('agent-') && entry.name.endsWith('.jsonl')
-          )
-          .map((entry) => path.join(newSubagentsPath, entry.name));
-        allFiles.push(...newFiles);
+        allFiles.push(...(await this.listNewStructureFiles(newSubagentsPath)));
       }
     } catch (error) {
       logger.error(`Error scanning NEW subagent structure for session ${sessionId}:`, error);
@@ -113,6 +103,42 @@ export class SubagentLocator {
     }
 
     return allFiles;
+  }
+
+  /**
+   * Lists agent-*.jsonl files under a session's subagents directory (NEW structure).
+   * Includes Workflow tool runs stored one level deeper at workflows/{runId}/agent-*.jsonl.
+   *
+   * @param subagentsPath - Path to the session's subagents directory
+   * @returns Promise resolving to array of file paths
+   */
+  private async listNewStructureFiles(subagentsPath: string): Promise<string[]> {
+    const files = await this.listAgentFilesInDir(subagentsPath);
+
+    const workflowsPath = path.join(subagentsPath, 'workflows');
+    if (await this.fsProvider.exists(workflowsPath)) {
+      const runs = await this.fsProvider.readdir(workflowsPath);
+      for (const run of runs) {
+        if (run.isDirectory()) {
+          files.push(...(await this.listAgentFilesInDir(path.join(workflowsPath, run.name))));
+        }
+      }
+    }
+
+    return files;
+  }
+
+  /**
+   * Lists agent-*.jsonl files directly inside a directory (non-recursive).
+   */
+  private async listAgentFilesInDir(dirPath: string): Promise<string[]> {
+    const entries = await this.fsProvider.readdir(dirPath);
+    return entries
+      .filter(
+        (entry) =>
+          entry.isFile() && entry.name.startsWith('agent-') && entry.name.endsWith('.jsonl')
+      )
+      .map((entry) => path.join(dirPath, entry.name));
   }
 
   /**

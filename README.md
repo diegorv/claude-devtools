@@ -12,12 +12,14 @@
   <sub>The debugging tool for Claude Code. Read session transcripts, inspect tool calls, track token usage — directly from the Claude Code logs on your machine.</sub>
 </p>
 
+> [!NOTE]
+> This is a fork of [matt1398/claude-devtools](https://github.com/matt1398/claude-devtools). All credit for the original project goes to its authors.
+
 
 <p align="center">
-  <a href="https://github.com/matt1398/claude-devtools/stargazers"><img src="https://img.shields.io/github/stars/matt1398/claude-devtools?style=flat-square&color=yellow&label=stars" alt="GitHub stars" /></a>&nbsp;
-  <a href="https://claude-dev.tools"><img src="https://img.shields.io/badge/Website-claude--dev.tools-blue?style=flat-square" alt="Website" /></a>&nbsp;
-  <a href="https://github.com/matt1398/claude-devtools/releases/latest"><img src="https://img.shields.io/github/v/release/matt1398/claude-devtools?style=flat-square&label=version&color=blue" alt="Latest Release" /></a>&nbsp;
-  <a href="https://github.com/matt1398/claude-devtools/releases"><img src="https://img.shields.io/github/downloads/matt1398/claude-devtools/total?style=flat-square&color=green" alt="Downloads" /></a>&nbsp;
+  <a href="https://github.com/diegorv/claude-devtools/stargazers"><img src="https://img.shields.io/github/stars/diegorv/claude-devtools?style=flat-square&color=yellow&label=stars" alt="GitHub stars" /></a>&nbsp;
+  <a href="https://github.com/diegorv/claude-devtools/releases/latest"><img src="https://img.shields.io/github/v/release/diegorv/claude-devtools?style=flat-square&label=version&color=blue" alt="Latest Release" /></a>&nbsp;
+  <a href="https://github.com/diegorv/claude-devtools/releases"><img src="https://img.shields.io/github/downloads/diegorv/claude-devtools/total?style=flat-square&color=green" alt="Downloads" /></a>&nbsp;
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows%20%7C%20Docker-lightgrey?style=flat-square" alt="Platform" />&nbsp;
   <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome Claude Code" /></a>
 </p>
@@ -25,20 +27,17 @@
 <br />
 
 <p align="center">
-  <a href="https://github.com/matt1398/claude-devtools/releases/latest">
+  <a href="https://github.com/diegorv/claude-devtools/releases/latest">
     <img src="https://img.shields.io/badge/macOS-Download-black?logo=apple&logoColor=white&style=flat" alt="Download for macOS" height="30" />
   </a>&nbsp;&nbsp;
-  <a href="https://github.com/matt1398/claude-devtools/releases/latest">
+  <a href="https://github.com/diegorv/claude-devtools/releases/latest">
     <img src="https://img.shields.io/badge/Linux-Download-FCC624?logo=linux&logoColor=black&style=flat" alt="Download for Linux" height="30" />
   </a>&nbsp;&nbsp;
-  <a href="https://github.com/matt1398/claude-devtools/releases/latest">
+  <a href="https://github.com/diegorv/claude-devtools/releases/latest">
     <img src="https://img.shields.io/badge/Windows-Download-0078D4?logo=windows&logoColor=white&style=flat" alt="Download for Windows" height="30" />
   </a>&nbsp;&nbsp;
   <a href="#docker--standalone-deployment">
     <img src="https://img.shields.io/badge/Docker-Deploy-2496ED?logo=docker&logoColor=white&style=flat" alt="Deploy with Docker" height="30" />
-  </a>&nbsp;&nbsp;
-  <a href="#installation">
-    <img src="https://img.shields.io/badge/Homebrew-Install-FBB040?logo=homebrew&logoColor=white&style=flat" alt="Install with Homebrew" height="30" />
   </a>
 </p>
 
@@ -93,64 +92,58 @@ The only workaround is `--verbose`, which dumps raw JSON, internal system prompt
 
 ## Installation
 
-### Homebrew (macOS)
-
-```bash
-brew install --cask claude-devtools
-```
-
 ### Direct Download
 
 | Platform | Download | Notes |
 |----------|----------|-------|
-| **macOS** (Apple Silicon) | [`.dmg`](https://github.com/matt1398/claude-devtools/releases/latest) | Download the `arm64` asset. Drag to Applications. On first launch: right-click → Open |
-| **macOS** (Intel) | [`.dmg`](https://github.com/matt1398/claude-devtools/releases/latest) | Download the `x64` asset. Drag to Applications. On first launch: right-click → Open |
-| **Linux** | [`.AppImage` / `.deb` / `.rpm` / `.pacman`](https://github.com/matt1398/claude-devtools/releases/latest) | Choose the package format for your distro |
-| **Windows** | [`.exe`](https://github.com/matt1398/claude-devtools/releases/latest) | Standard installer. May trigger SmartScreen — click "More info" → "Run anyway" |
+| **macOS** (Apple Silicon) | [`.dmg`](https://github.com/diegorv/claude-devtools/releases/latest) | Download the `arm64` asset. Drag to Applications. On first launch: right-click → Open |
+| **macOS** (Intel) | [`.dmg`](https://github.com/diegorv/claude-devtools/releases/latest) | Download the `x64` asset. Drag to Applications. On first launch: right-click → Open |
+| **Linux** | [`.AppImage` / `.deb` / `.rpm` / `.pacman`](https://github.com/diegorv/claude-devtools/releases/latest) | Choose the package format for your distro |
+| **Windows** | [`.exe`](https://github.com/diegorv/claude-devtools/releases/latest) | Standard installer. May trigger SmartScreen — click "More info" → "Run anyway" |
 | **Docker** | `docker compose up` | Open `http://localhost:3456`. See [Docker deployment](#docker--standalone-deployment) |
 
 ---
 
 ## Key Features
 
-### [Context Reconstruction](https://claude-dev.tools/docs/token-usage)
+### Context Reconstruction
 
 <img width="100%" alt="context" src="https://github.com/user-attachments/assets/9ff4a5a7-bcf6-47fb-8ca5-d4021540804b" />
 
 Per-turn token attribution across 7 categories — **CLAUDE.md** (global, project, directory), **skills**, **@-mentioned files**, **tool I/O**, **thinking**, **team overhead**, **user text**. See exactly what's in the context window at any point.
 
-### [Terminal-Friendly Copy & Paste](https://claude-dev.tools/docs/copy-paste)
+### Terminal-Friendly Copy & Paste
 
 <video src="https://github.com/user-attachments/assets/976dfc47-4d3c-4539-9be2-218037b3dc37" controls="controls" muted="muted" style="max-width: 100%;"></video>
 
 Copying Claude Code output from the terminal mangles it — selection wraps at the terminal width, ANSI color codes leak into the clipboard, and code blocks lose their Markdown formatting. claude-devtools renders every message, tool call, and output as **real selectable text** with **one-click copy** on every code block, plus full-session **export to Markdown / JSON / plain text**.
 
-### [Project Memory](https://claude-dev.tools/docs/memory)
+### Project Memory
 
 <img width="100%" alt="Project memory viewer with layer list, frontmatter card, and Open-in launcher" src="public/memory.png" />
 
 Claude Code stores per-project memory at `~/.claude/projects/<project>/memory/` — a `MEMORY.md` index plus one `.md` file per layer (working style, architecture notes, etc.). claude-devtools surfaces this as a sidebar entry that opens a dedicated pane: layer list on the left, full markdown rendering on the right with frontmatter shown as a metadata card, Obsidian-style `[[wikilinks]]` for cross-layer navigation, and an icon-driven "Open in…" launcher that hands any layer (or the whole memory folder) off to Finder/Explorer, Cursor, VS Code, Zed, Xcode, iTerm, Ghostty, Terminal — or copies the absolute path.
 
-### [Team & Subagent Trees](https://claude-dev.tools/docs/subagents)
+### Team & Subagent Trees
 
 Isolated execution trees per agent with tool traces, token metrics, duration, and cost. Nested agents render recursively.
 
-### [Tool Call Inspector](https://claude-dev.tools/docs/tool-calls)
+### Tool Call Inspector
 
 Every tool call expanded with specialized viewers — syntax-highlighted Read calls, inline Edit diffs, Bash output, and full subagent trees.
 
 
-### [SSH Remote Sessions](https://claude-dev.tools/docs/ssh-remote)
+### SSH Remote Sessions
 
 Inspect sessions on any remote machine over SSH. Reads `~/.ssh/config`, supports agent forwarding and key auth.
 
-### [Compaction Visualization](https://claude-dev.tools/docs/compaction)
+### Compaction Visualization
 
 <video src="https://github.com/user-attachments/assets/25281f09-05ed-4f81-97bc-7b1754b08b06" controls="controls" muted="muted" style="max-width: 100%;"></video>
 
-See the moment your context hits the limit. Visualizes how context fills, compresses, and refills — so you know exactly what was lost. ([Why did Claude forget? — debugging walkthrough](https://claude-dev.tools/docs/why-claude-forgot))
+See the moment your context hits the limit. Visualizes how context fills, compresses, and refills — so you know exactly what was lost.
 
-### [Notification Triggers](https://claude-dev.tools/docs/notifications)
+### Notification Triggers
 
 <video src="https://github.com/user-attachments/assets/3b07b3b4-57af-49ed-9539-be7c56a244f5" controls="controls" muted="muted" style="max-width: 100%;"></video>
 
@@ -160,8 +153,6 @@ System notifications for `.env` access, tool errors, high token usage, and custo
 ### Command Palette & Multi-Pane Layout
 
 **Cmd+K** for cross-session search. Open multiple sessions side-by-side with drag-and-drop tabs.
-
-📖 **Full documentation:** [claude-dev.tools/docs](https://claude-dev.tools/docs) · **Copy from Claude Code:** [claude-dev.tools/docs/copy-paste](https://claude-dev.tools/docs/copy-paste) · **JSONL format reference:** [claude-dev.tools/docs/jsonl-format](https://claude-dev.tools/docs/jsonl-format) · **`claude --verbose` comparison:** [claude-dev.tools/docs/verbose-vs-devtools](https://claude-dev.tools/docs/verbose-vs-devtools)
 
 ---
 
@@ -207,7 +198,7 @@ The standalone server has **zero** outbound network calls. For maximum isolation
 **Prerequisites:** Node.js 20+, pnpm 10+
 
 ```bash
-git clone https://github.com/matt1398/claude-devtools.git
+git clone https://github.com/diegorv/claude-devtools.git
 cd claude-devtools
 pnpm install
 pnpm dev
@@ -227,9 +218,9 @@ pnpm dev
 
 ## Community
 
-- **Discussions** — share ideas, ask questions, and read what others are doing in [GitHub Discussions](https://github.com/matt1398/claude-devtools/discussions).
-- **Issues** — bug reports and feature requests in [GitHub Issues](https://github.com/matt1398/claude-devtools/issues).
-- **Changelog** — every release is documented in [CHANGELOG.md](CHANGELOG.md) and on [claude-dev.tools/changelog](https://claude-dev.tools/changelog).
+- **Discussions** — share ideas, ask questions, and read what others are doing in [GitHub Discussions](https://github.com/diegorv/claude-devtools/discussions).
+- **Issues** — bug reports and feature requests in [GitHub Issues](https://github.com/diegorv/claude-devtools/issues).
+- **Changelog** — every release is documented in [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
@@ -247,14 +238,14 @@ IPC handlers validate all inputs with strict path containment checks. File reads
 
 ## Star History
 
-<a href="https://www.star-history.com/#matt1398/claude-devtools&Date">
+<a href="https://www.star-history.com/#diegorv/claude-devtools&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=matt1398/claude-devtools&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=matt1398/claude-devtools&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=matt1398/claude-devtools&type=Date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=diegorv/claude-devtools&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=diegorv/claude-devtools&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=diegorv/claude-devtools&type=Date" />
   </picture>
 </a>
 
 <p align="center">
-  <sub>Found this useful? <a href="https://github.com/matt1398/claude-devtools">⭐ Star the repo</a> — it&rsquo;s the easiest way to help other developers discover claude-devtools.</sub>
+  <sub>Found this useful? <a href="https://github.com/diegorv/claude-devtools">⭐ Star the repo</a> — it&rsquo;s the easiest way to help other developers discover claude-devtools.</sub>
 </p>

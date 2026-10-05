@@ -27,7 +27,7 @@ describe('WorktreeGrouper', () => {
 
     fs.writeFileSync(
       path.join(mainRepoDir, '.git', 'config'),
-      '[remote "origin"]\n\turl = git@github.com:matt1398/claude-devtools.git\n'
+      '[remote "origin"]\n\turl = git@github.com:diegorv/claude-devtools.git\n'
     );
 
     fs.mkdirSync(worktreeDir);

@@ -4,7 +4,7 @@ All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-For the full list of merged PRs per release, see [GitHub Releases](https://github.com/matt1398/claude-devtools/releases).
+For the full list of merged PRs per release, see [GitHub Releases](https://github.com/diegorv/claude-devtools/releases).
 
 ## [Unreleased]
 
@@ -178,4 +178,4 @@ For the full list of merged PRs per release, see [GitHub Releases](https://githu
 
 ## [0.3.0] — 2026-02-12
 
-Initial public-facing development releases (`0.1.x` – `0.3.x`). Core functionality: read `~/.claude/` JSONL transcripts, render structured conversation views, inspect tool calls, view per-turn token usage. See the [GitHub Releases page](https://github.com/matt1398/claude-devtools/releases) for the full early-version history.
+Initial public-facing development releases (`0.1.x` – `0.3.x`). Core functionality: read `~/.claude/` JSONL transcripts, render structured conversation views, inspect tool calls, view per-turn token usage. See the [GitHub Releases page](https://github.com/diegorv/claude-devtools/releases) for the full early-version history.

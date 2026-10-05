@@ -6,15 +6,15 @@
   "license": "MIT",
   "author": {
     "name": "claude-devtools contributors",
-    "email": "matt1398@users.noreply.github.com"
+    "email": "diegorv@users.noreply.github.com"
   },
-  "homepage": "https://github.com/matt1398/claude-devtools",
+  "homepage": "https://github.com/diegorv/claude-devtools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matt1398/claude-devtools.git"
+    "url": "https://github.com/diegorv/claude-devtools.git"
   },
   "bugs": {
-    "url": "https://github.com/matt1398/claude-devtools/issues"
+    "url": "https://github.com/diegorv/claude-devtools/issues"
   },
   "main": "dist-electron/main/index.cjs",
   "scripts": {

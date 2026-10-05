@@ -178,6 +178,8 @@
     "publish": [
       {
         "provider": "github",
+        "owner": "diegorv",
+        "repo": "claude-devtools",
         "releaseType": "draft"
       }
     ]
